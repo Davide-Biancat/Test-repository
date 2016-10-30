@@ -17,15 +17,22 @@ SOURCES += main.cpp\
         arduinoreader.cpp \
         glwidget.cpp \
         logo.cpp \
-        worker.cpp
+        worker.cpp \
+        libs/QCustomPlot/qcustomplot.cpp \
+  #  debug/moc_arduinoreader.cpp \
+  #  debug/moc_glwidget.cpp \
+  #  debug/moc_mainwindow.cpp \
+  #  debug/moc_qcustomplot.cpp \
+  #  debug/moc_worker.cpp \
+
+INCLUDEPATH += "$$_PRO_FILE_PWD_/libs/QCustomPlot"
 
 HEADERS  += mainwindow.h \
     arduinoreader.h \
-   # qcustomplot.h \ <--
+    libs/QCustomPlot/qcustomplot.h \
     glwidget.h \
     logo.h \
     worker.h \
-    libs/QCUstomPlot/qcustomplot.h\ # <--
     libs/Eigen/src/Cholesky/LDLT.h \
     libs/Eigen/src/Cholesky/LLT.h \
     libs/Eigen/src/Cholesky/LLT_MKL.h \
@@ -279,6 +286,10 @@ HEADERS  += mainwindow.h \
     libs/Eigen/src/SVD/JacobiSVD.h \
     libs/Eigen/src/SVD/JacobiSVD_MKL.h \
     libs/Eigen/src/SVD/UpperBidiagonalization.h \
-    libs/Eigen/src/UmfPackSupport/UmfPackSupport.h
+    libs/Eigen/src/UmfPackSupport/UmfPackSupport.h \
 
 FORMS    += mainwindow.ui
+
+#DISTFILES += \
+ #   object_script.untitled1.Debug \
+  #  object_script.untitled1.Release

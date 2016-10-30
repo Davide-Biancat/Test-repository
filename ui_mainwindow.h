@@ -26,7 +26,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include <glwidget.h>
-#include "libs/QCustomPlot/qcustomplot.h"
+#include "qcustomplot.h"
 
 QT_BEGIN_NAMESPACE
 

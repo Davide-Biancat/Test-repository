@@ -1,11 +1,14 @@
 #include "arduinoreader.h"
 #include <iostream>
 
+#define MESSAGE_LENGHT 12 //Message lenght from arduino in bystes
+
 ArduinoReader::ArduinoReader(QString serial_name)//Passo il nome della porta sulla quale c'è arduino
 {
     qDebug() << "ARDUINOREADER: Constructor called";
     arduino_port_name = serial_name;
     sensorData = QVector<QString>(9,"");
+    //buffer.resize(MESSAGE_LENGHT);
     i=0;
 }
 
@@ -30,8 +33,9 @@ void ArduinoReader::connectToArduino()
     qDebug() << "ARDUINOREADER: My thread got started, serial connection setup done";
 
     qDebug() << "ARDUINOREADER: Signals & slots connetcted";
-    arduino->write("#o1");//Enable output stream
-    arduino->write("#ob 4");//1: accelerometer, 2:magnetometer, 3:gyroscope ,4: $ax,ay,az,gx,gy,gz,mx,my,mz
+    arduino->write("#o1#ob");//Enable output stream
+    arduino->flush();
+    //arduino->write("#ob");//1: accelerometer, 2:magnetometer, 3:gyroscope ,4: $ax,ay,az,gx,gy,gz,mx,my,mz
     qDebug() << "ARDUINOREADER: Sent serial commands, listenig serial";
     QThread::msleep(1000);//Wait 1 sec
     buffer = arduino->readAll();
@@ -51,9 +55,14 @@ void ArduinoReader::removeNonNumberLeftChars(QString &s) //BAD function
 
 void ArduinoReader::serialRead()
 {
-    if(arduino->canReadLine())
+    if(arduino->bytesAvailable() >= qint64(2))
     {
-        buffer = arduino->readLine();
+        buffer = arduino->readAll();
+        qDebug() << "buffer: "<<buffer.size();
+        qDebug() <<buffer;
+        //for(int i; i < buffer.size(); i++)
+            //qDebug() << buffer[i];
+      /*  buffer = arduino->readLine(); //Buffer: QString
 
         xyz = buffer.split(',');
         //qDebug() <<"xyz size:"<< xyz.size();
@@ -66,8 +75,8 @@ void ArduinoReader::serialRead()
             //qDebug() << "buffer:" << buffer;
             //qDebug() << "x: " << sensorData[0];
             //removeNonNumberLeftChars(sensorData[0]);
-            emit gotNewVals(sensorData);
+            emit gotNewVals(sensorData);//sensorData:QString[9]
         //}
-        buffer = "";
+        buffer = "";*/
     }
 }

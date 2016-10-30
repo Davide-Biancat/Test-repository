@@ -1,11 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "libs/QCustomPlot/qcustomplot.h"
+#include <libs/QCustomPlot/qcustomplot.h>
 #include "arduinoreader.h"
 #include "worker.h"
 
 #include <QMainWindow>
+#include <QSerialPortInfo>
+#include <math.h>
+#include <qmath.h>
 
 namespace Ui {
 class MainWindow;

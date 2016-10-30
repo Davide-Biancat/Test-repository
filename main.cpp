@@ -2,8 +2,8 @@
 #include <QApplication>
 #include <QMetaType>
 
-#define ARDUINO_VENDOR_ID  1659 //9025  1027
-#define ARDUINO_PRODUCT_ID 8963 //67    24597
+#define ARDUINO_VENDOR_ID  1027 //1659 //9025
+#define ARDUINO_PRODUCT_ID 24597 //8963 //67
 
 int main(int argc, char *argv[])
 {

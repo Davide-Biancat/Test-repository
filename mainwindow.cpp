@@ -2,13 +2,16 @@
 #include "ui_mainwindow.h"
 #include "worker.h"
 
-#include <QSerialPortInfo>
+/*#include <QSerialPortInfo>
 #include <arduinoreader.h>
 #include <math.h>
-#include <qmath.h>
+#include <qmath.h>*/
 
 
 #define PI 3.14159265
+
+using namespace std;
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

@@ -2,7 +2,8 @@
 #define ARDUINOREADER_H
 
 #include <QtSerialPort>
-
+#include <QByteArray>
+#include <cstdint>
 
 class ArduinoReader : public QObject
 {
@@ -18,7 +19,7 @@ private:
 
     QString arduino_port_name;
     QSerialPort *arduino;
-    QString buffer;
+    QByteArray buffer;
     QVector<QString> sensorData;
     QList<QString> xyz;
 
