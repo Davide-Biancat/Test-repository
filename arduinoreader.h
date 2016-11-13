@@ -22,13 +22,15 @@ private:
     QByteArray buffer;
     QVector<QString> sensorData;
     QList<QString> xyz;
+    bool synched;
 
 private slots:
     void serialRead();
     void connectToArduino();
+    //void requestSynToken(char *token);
 
 protected:
-    void removeNonNumberLeftChars(QString &s);
+    //void removeNonNumberLeftChars(QString &s);
     int i;
 
 };

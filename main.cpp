@@ -32,31 +32,33 @@ int main(int argc, char *argv[])
         qDebug() << " -Product ID: "<< serialPortInfo.productIdentifier();
      }
 
-    foreach(const QSerialPortInfo &serialPortInfo, QSerialPortInfo::availablePorts())
+    foreach(const QSerialPortInfo &serialPortInfo, QSerialPortInfo::availablePorts())//Cerco arduino
     {
-        if(serialPortInfo.hasVendorIdentifier() && serialPortInfo.hasProductIdentifier() && serialPortInfo.vendorIdentifier() == ARDUINO_VENDOR_ID && serialPortInfo.productIdentifier() == ARDUINO_PRODUCT_ID)
+        if(/*serialPortInfo.hasVendorIdentifier() && serialPortInfo.hasProductIdentifier() && */
+             serialPortInfo.vendorIdentifier() == ARDUINO_VENDOR_ID && serialPortInfo.productIdentifier() == ARDUINO_PRODUCT_ID)//Trovato arduino
         {
             arduino_port_name = serialPortInfo.portName();
-            arduino_available = true;//Trovato arduino
+            arduino_available = true;
         }
     }
 
     if(arduino_available)
     {
         qDebug() << "Found an arduino";
-        ArduinoReader *arduinoReader = new ArduinoReader(arduino_port_name); //istanzio un thread ArduinoReader
+        ArduinoReader *arduinoReader = new ArduinoReader(arduino_port_name); //istanzio un ArduinoReader
         qDebug() << "MAIN: Attempting to connect signal & slots";
 
         QObject::connect(arduinoReader,SIGNAL(gotNewVals(const QVector<QString> &)),&w, SLOT(updateWindowData(const QVector<QString> &)));
 
         QThread *qThread1 = new QThread;
-        arduinoReader->moveToThread(qThread1);
+        arduinoReader->moveToThread(qThread1); //Sposto l' ArduinoReader su un'altro thread
+
         QObject::connect(qThread1,SIGNAL(started()),arduinoReader,SLOT(connectToArduino()));
         QObject::connect(qThread1, SIGNAL(finished()), qThread1, SLOT(deleteLater()));
 
 
         qThread1->start();
-        qDebug() << "MAIN: Done connecting signal & slots, ArduinoReader started on a new thread";
+        qDebug() << "MAIN: Done connecting signal & slots, ArduinoReader moved on a new thread";
 
         w.show();
     }
