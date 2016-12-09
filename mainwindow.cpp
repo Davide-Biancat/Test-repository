@@ -110,9 +110,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
-void MainWindow::updateWindowData(const QVector<QString> &v)
+void MainWindow::updateWindowData(const float* angles)
 {
 
+    QVector<QString> v(12,"");
     //qDebug() << "MAINWINDOW: updateGraph";
     ui->accX_label->setText("raw_accelX = " + v[0]);
     ui->accY_label->setText("raw_accelY = " + v[1]);
@@ -171,15 +172,15 @@ void MainWindow::updateWindowData(const QVector<QString> &v)
     filters[1].complemetaryFilter(raw_readings[1],dt,raw_accAngs[1]);
     filters[2].complemetaryFilter(raw_readings[2],dt,raw_accAngs[2]);
 
-    emit xRotationChanged(filters[0].getCurrAngle());
-    emit yRotationChanged(filters[1].getCurrAngle());
-    emit zRotationChanged(filters[2].getCurrAngle());
+    emit xRotationChanged((int)floor(angles[0] >= 0)?(angles[0] + 0.5):(angles[0] - 0.5));
+    emit yRotationChanged((int)floor(angles[1] >= 0)?(angles[1] + 0.5):(angles[1] - 0.5));
+    emit zRotationChanged((int)floor(angles[2] >= 0)?(angles[2] + 0.5):(angles[2] - 0.5));
 
     ui->plotWidget_2->graph(0)->addData(key,filters[0].getCurrAngle());
     ui->plotWidget_2->graph(1)->addData(key,filters[1].getCurrAngle());
     ui->plotWidget_2->graph(2)->addData(key,filters[2].getCurrAngle());
 
-    qDebug() <<"dt: " << dt << "filter[0]: " << filters[0].getCurrAngle() << "filter[1]: " << filters[1].getCurrAngle() << "filter[2]: " << filters[2].getCurrAngle();
+    //qDebug() <<"dt: " << dt << "filter[0]: " << filters[0].getCurrAngle() << "filter[1]: " << filters[1].getCurrAngle() << "filter[2]: " << filters[2].getCurrAngle();
 
     // remove data of lines that's outside visible range:
     ui->plotWidget_2->graph(0)->removeDataBefore(key-unitsOnScreen);

@@ -24,7 +24,7 @@ public:
     void addDataToGraph(double key,double value);
 
 public slots:
-    void updateWindowData(const QVector<QString>&);
+    void updateWindowData(const float *);
 
 private slots:
 

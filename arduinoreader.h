@@ -13,7 +13,7 @@ public:
     ~ArduinoReader();
 
 signals:
-    void gotNewVals(const QVector<QString>&);
+    void gotNewVals(const float *t);
 
 private:
 
