@@ -9,6 +9,7 @@
 #include <QSerialPortInfo>
 #include <math.h>
 #include <qmath.h>
+#include <cstring>
 
 namespace Ui {
 class MainWindow;
@@ -21,28 +22,21 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void addDataToGraph(double key,double value);
 
 public slots:
-    void updateWindowData(const float *);
+    void updateWindowData(uint16_t, int16_t*, float*, float*);//
+    void setGyroAngles(float x, float y, float z);
 
 private slots:
-
     void on_pushButton_clicked();
-
-    void on_changeGraph_clicked();
 
 private:
     Ui::MainWindow *ui;
 
     double timeAtStart,unitLenghtInms,lastUpdateTime;
-    QVector<double> notPos;
-    QVector<double> raw_accAngs;
-    QVector<double> raw_readings;
-    QVector<double> offsets;
-    QVector<double> LBS;
-    int unitsOnScreen,currGraph;
-    QVector<Worker> filters;
+    float gyroAngs[3];
+
+    int unitsOnScreen;
 
 signals:
     xRotationChanged(int);

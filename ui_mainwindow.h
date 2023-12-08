@@ -20,6 +20,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
@@ -35,24 +36,27 @@ class Ui_MainWindow
 public:
     QWidget *centralWidget;
     QGridLayout *gridLayout;
-    QCustomPlot *plotWidget_2;
-    QCustomPlot *plotWidget;
-    QPushButton *changeGraph;
     QVBoxLayout *verticalLayout_2;
     QLabel *accX_label;
-    QLabel *accY_label;
-    QLabel *accZ_label;
+    QLabel *kalmanX_label;
     QLabel *gyroX_label;
+    QSpacerItem *verticalSpacer;
+    QLabel *accY_label;
+    QLabel *kalmanY_label;
     QLabel *gyroY_label;
+    QSpacerItem *verticalSpacer_2;
+    QLabel *accZ_label;
+    QLabel *kalmanZ_label;
     QLabel *gyroZ_label;
-    QLabel *magX_label;
-    QLabel *magY_label;
-    QLabel *magZ_label;
     QPushButton *pushButton;
     QHBoxLayout *horizontalLayout_2;
     QTextEdit *textEdit;
     QTextEdit *textEdit_2;
     GLWidget *openGLWidget;
+    QVBoxLayout *verticalLayout;
+    QCustomPlot *plotWidget_X;
+    QCustomPlot *plotWidget_Y;
+    QCustomPlot *plotWidget_Z;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -61,35 +65,13 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(757, 416);
+        MainWindow->resize(1180, 611);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
         gridLayout->setSpacing(0);
         gridLayout->setContentsMargins(11, 11, 11, 11);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        plotWidget_2 = new QCustomPlot(centralWidget);
-        plotWidget_2->setObjectName(QStringLiteral("plotWidget_2"));
-        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy.setHorizontalStretch(1);
-        sizePolicy.setVerticalStretch(1);
-        sizePolicy.setHeightForWidth(plotWidget_2->sizePolicy().hasHeightForWidth());
-        plotWidget_2->setSizePolicy(sizePolicy);
-
-        gridLayout->addWidget(plotWidget_2, 6, 1, 2, 1);
-
-        plotWidget = new QCustomPlot(centralWidget);
-        plotWidget->setObjectName(QStringLiteral("plotWidget"));
-        sizePolicy.setHeightForWidth(plotWidget->sizePolicy().hasHeightForWidth());
-        plotWidget->setSizePolicy(sizePolicy);
-
-        gridLayout->addWidget(plotWidget, 5, 1, 1, 1);
-
-        changeGraph = new QPushButton(centralWidget);
-        changeGraph->setObjectName(QStringLiteral("changeGraph"));
-
-        gridLayout->addWidget(changeGraph, 2, 1, 3, 1);
-
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setSpacing(0);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
@@ -98,53 +80,61 @@ public:
 
         verticalLayout_2->addWidget(accX_label);
 
-        accY_label = new QLabel(centralWidget);
-        accY_label->setObjectName(QStringLiteral("accY_label"));
+        kalmanX_label = new QLabel(centralWidget);
+        kalmanX_label->setObjectName(QStringLiteral("kalmanX_label"));
 
-        verticalLayout_2->addWidget(accY_label);
-
-        accZ_label = new QLabel(centralWidget);
-        accZ_label->setObjectName(QStringLiteral("accZ_label"));
-
-        verticalLayout_2->addWidget(accZ_label);
+        verticalLayout_2->addWidget(kalmanX_label);
 
         gyroX_label = new QLabel(centralWidget);
         gyroX_label->setObjectName(QStringLiteral("gyroX_label"));
 
         verticalLayout_2->addWidget(gyroX_label);
 
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_2->addItem(verticalSpacer);
+
+        accY_label = new QLabel(centralWidget);
+        accY_label->setObjectName(QStringLiteral("accY_label"));
+
+        verticalLayout_2->addWidget(accY_label);
+
+        kalmanY_label = new QLabel(centralWidget);
+        kalmanY_label->setObjectName(QStringLiteral("kalmanY_label"));
+
+        verticalLayout_2->addWidget(kalmanY_label);
+
         gyroY_label = new QLabel(centralWidget);
         gyroY_label->setObjectName(QStringLiteral("gyroY_label"));
 
         verticalLayout_2->addWidget(gyroY_label);
+
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_2->addItem(verticalSpacer_2);
+
+        accZ_label = new QLabel(centralWidget);
+        accZ_label->setObjectName(QStringLiteral("accZ_label"));
+
+        verticalLayout_2->addWidget(accZ_label);
+
+        kalmanZ_label = new QLabel(centralWidget);
+        kalmanZ_label->setObjectName(QStringLiteral("kalmanZ_label"));
+
+        verticalLayout_2->addWidget(kalmanZ_label);
 
         gyroZ_label = new QLabel(centralWidget);
         gyroZ_label->setObjectName(QStringLiteral("gyroZ_label"));
 
         verticalLayout_2->addWidget(gyroZ_label);
 
-        magX_label = new QLabel(centralWidget);
-        magX_label->setObjectName(QStringLiteral("magX_label"));
-
-        verticalLayout_2->addWidget(magX_label);
-
-        magY_label = new QLabel(centralWidget);
-        magY_label->setObjectName(QStringLiteral("magY_label"));
-
-        verticalLayout_2->addWidget(magY_label);
-
-        magZ_label = new QLabel(centralWidget);
-        magZ_label->setObjectName(QStringLiteral("magZ_label"));
-
-        verticalLayout_2->addWidget(magZ_label);
-
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QStringLiteral("pushButton"));
-        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(pushButton->sizePolicy().hasHeightForWidth());
-        pushButton->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(pushButton->sizePolicy().hasHeightForWidth());
+        pushButton->setSizePolicy(sizePolicy);
 
         verticalLayout_2->addWidget(pushButton);
 
@@ -160,11 +150,11 @@ public:
 
         textEdit_2 = new QTextEdit(centralWidget);
         textEdit_2->setObjectName(QStringLiteral("textEdit_2"));
-        QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(textEdit_2->sizePolicy().hasHeightForWidth());
-        textEdit_2->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(textEdit_2->sizePolicy().hasHeightForWidth());
+        textEdit_2->setSizePolicy(sizePolicy1);
         textEdit_2->setLineWrapMode(QTextEdit::WidgetWidth);
 
         horizontalLayout_2->addWidget(textEdit_2);
@@ -175,30 +165,49 @@ public:
         verticalLayout_2->setStretch(0, 3);
         verticalLayout_2->setStretch(1, 3);
         verticalLayout_2->setStretch(2, 3);
-        verticalLayout_2->setStretch(3, 3);
         verticalLayout_2->setStretch(4, 3);
         verticalLayout_2->setStretch(5, 3);
         verticalLayout_2->setStretch(6, 3);
-        verticalLayout_2->setStretch(7, 3);
         verticalLayout_2->setStretch(8, 3);
-        verticalLayout_2->setStretch(10, 1);
+        verticalLayout_2->setStretch(9, 3);
+        verticalLayout_2->setStretch(10, 3);
+        verticalLayout_2->setStretch(12, 1);
 
-        gridLayout->addLayout(verticalLayout_2, 2, 0, 6, 1);
+        gridLayout->addLayout(verticalLayout_2, 2, 0, 2, 1);
 
         openGLWidget = new GLWidget(centralWidget);
         openGLWidget->setObjectName(QStringLiteral("openGLWidget"));
 
-        gridLayout->addWidget(openGLWidget, 2, 2, 6, 1);
+        gridLayout->addWidget(openGLWidget, 2, 2, 2, 1);
 
-        gridLayout->setRowStretch(5, 2);
-        gridLayout->setRowStretch(6, 1);
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setSpacing(1);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        plotWidget_X = new QCustomPlot(centralWidget);
+        plotWidget_X->setObjectName(QStringLiteral("plotWidget_X"));
+
+        verticalLayout->addWidget(plotWidget_X);
+
+        plotWidget_Y = new QCustomPlot(centralWidget);
+        plotWidget_Y->setObjectName(QStringLiteral("plotWidget_Y"));
+
+        verticalLayout->addWidget(plotWidget_Y);
+
+        plotWidget_Z = new QCustomPlot(centralWidget);
+        plotWidget_Z->setObjectName(QStringLiteral("plotWidget_Z"));
+
+        verticalLayout->addWidget(plotWidget_Z);
+
+
+        gridLayout->addLayout(verticalLayout, 2, 1, 2, 1);
+
         gridLayout->setColumnStretch(0, 1);
-        gridLayout->setColumnStretch(1, 25);
-        gridLayout->setColumnStretch(2, 25);
+        gridLayout->setColumnStretch(1, 1);
+        gridLayout->setColumnStretch(2, 1);
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 757, 21));
+        menuBar->setGeometry(QRect(0, 0, 1180, 21));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -215,16 +224,15 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
-        changeGraph->setText(QApplication::translate("MainWindow", "Accelerometer", 0));
         accX_label->setText(QString());
-        accY_label->setText(QString());
-        accZ_label->setText(QString());
-        gyroX_label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
+        kalmanX_label->setText(QString());
+        gyroX_label->setText(QString());
+        accY_label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
+        kalmanY_label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
         gyroY_label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
+        accZ_label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
+        kalmanZ_label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
         gyroZ_label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
-        magX_label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
-        magY_label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
-        magZ_label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
         pushButton->setText(QApplication::translate("MainWindow", "MysteriousButton", 0));
     } // retranslateUi
 

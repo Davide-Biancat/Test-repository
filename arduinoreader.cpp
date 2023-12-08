@@ -2,8 +2,6 @@
 #include <iostream>
 #include <sys/time.h>
 
-#define MESSAGE_LENGHT 24 //Message lenght from arduino in bytes
-
 using namespace std;
 
 long elapsed_ms(struct timeval start, struct timeval end)
@@ -15,9 +13,6 @@ ArduinoReader::ArduinoReader(QString serial_name)//Passo il nome della porta sul
 {
     //qDebug() << "ARDUINOREADER: Constructor called";
     arduino_port_name = serial_name;
-    sensorData = QVector<QString>(9,"");
-    //buffer.resize(MESSAGE_LENGHT);
-    synched = false;
     i=0;
 }
 
@@ -34,43 +29,57 @@ void ArduinoReader::connectToArduino() //Setup
     arduino = new QSerialPort;
     arduino->setPortName(arduino_port_name);
     arduino->open(QSerialPort::ReadWrite);
-    arduino->setBaudRate(QSerialPort::Baud57600);
+    arduino->setBaudRate(SERIAL_BAUD_RATE);
     arduino->setDataBits(QSerialPort::Data8);
     arduino->setParity(QSerialPort::NoParity);
     arduino->setStopBits(QSerialPort::OneStop);
     arduino->setFlowControl(QSerialPort::NoFlowControl);
     //qDebug() << "ARDUINOREADER: serial connection setup done";
 
-    //qDebug() << "ARDUINOREADER: Signals & slots connetcted";
-
     QThread::msleep(2000);//Wait 2 sec
-    //qDebug() << "ARDUINOREADER: Synchyng up";
-
-    //buffer = arduino->readAll(); //Clear buffer
-    //qDebug() <<"ARDUINOREADER: Requesting synch token!";
-    arduino->write("#o0#ob#oe0");//Disable continuos output stream, output in bynary mode, disable error message output
-    arduino->clear();
-    arduino->write("#f");
     QObject::connect(arduino,SIGNAL(readyRead()),this, SLOT(serialRead()));
+
+    arduino->clear();
+    arduino->write("i");
+    arduino->flush();
+    qDebug()<<"requested first frame";
 }
 
 void ArduinoReader::serialRead()
-{
-    if(arduino->bytesAvailable() >= qint64(MESSAGE_LENGHT))
+{  
+    if(arduino->bytesAvailable() >= MESSAGE_LENGHT)
     {
-        buffer = arduino->readAll();
+        i = 0;
 
-        float t[MESSAGE_LENGHT/4];
-        char *returnFloat = (char*) & t;
-        for(i = 0; i < MESSAGE_LENGHT; i++) //C++ Float has the same endianess of C, java not though
-            returnFloat[i] = (char)buffer[i];
+        GD_t = (uint16_t)((arduino->read(1)[0] & 0xff) | ((arduino->read(1)[0] & 0xff)<<8));
+        for(k = 0; k < 3; k++)
+          gyroRate[k] = (int16_t)((arduino->read(1)[0] & 0xff) | (arduino->read(1)[0] & 0xff)<<8);
+        for(k = 0; k < 3; k++)
+          accel[k] = (int16_t)((arduino->read(1)[0] & 0xff) | (arduino->read(1)[0] & 0xff)<<8);
+        for(k = 0; k < 3; k++)
+          magn[k] = (float)((arduino->read(1)[0] & 0xff) | (arduino->read(1)[0] & 0xff)<<8 | (arduino->read(1)[0] & 0xff)<<16 | (arduino->read(1)[0] & 0xff)<<24);
 
-        emit gotNewVals(t);
-        qDebug() << "buffer size: "<<buffer.size();
-        qDebug() <<"Floats: "<<t[0]<<'\t'<<t[1]<<'\t'<<t[2]<<'\t'<<t[3]<<'\t'<<t[4]<<'\t'<<t[5];
+        for(k = 0; k < 3; k++)
+          accelAngs[k] = (float)((arduino->read(1)[0] & 0xff) | (arduino->read(1)[0] & 0xff)<<8 | (arduino->read(1)[0] & 0xff)<<16 | (arduino->read(1)[0] & 0xff)<<24);
+        for(k = 0; k < 3; k++)
+          filteredAngs[k] = (float)((arduino->read(1)[0] & 0xff) | (arduino->read(1)[0] & 0xff)<<8 | (arduino->read(1)[0] & 0xff)<<16 | (arduino->read(1)[0] & 0xff)<<24);
+
+        if(arduino->read(1)[0] == '\n'&& !firstIteration)
+        {
+            emit gotNewVals(GD_t, gyroRate, accel, accelAngs, magn);
+            emit updateGUI(filteredAngs);
+        }
+        else if(firstIteration)
+        {
+            emit initFilter(accel, magn);
+            firstIteration = false;
+        }
+        /*qDebug()<<"GD_t: "<<(int)GD_t<<"\tgyro:\t"<<gyroRate[0]<<"\t"<<gyroRate[1]<<"\t"<<gyroRate[2]<<
+                  "\taccel: "<<accel[0]<<"\t"<<accel[1]<<"\t"<<accel[2]<<
+                  "\tmagn: "<<magn[0]<<"\t"<<magn[1]<<"\t"<<magn[2];*/
         arduino->clear();
-        arduino->write("#f");
-
+        arduino->write("i");
     }
+    QThread::msleep(5);
 
 }
